@@ -15,23 +15,12 @@ import java.util.Properties;
  * Wrapper class that calls the actual lambda function, instantiating the caller class, as
  * necessary.
  */
-public abstract class LambdaWrapper<T, C extends LambdaHandler<?>> {
+public abstract class LambdaWrapper<T, C extends LambdaHandler<?>> extends LambdaBaseWrapper<C>{
 
-  private final Class<C> clazz;
-  private final List<Module> modules;
   private C inst;
 
   public LambdaWrapper(Class<C> handlerClass, List<Module> modules) {
-    this.clazz = handlerClass;
-    this.modules = modules;
-  }
-
-  protected C getInstance(){
-    if (inst == null) {
-      Injector guice = Guice.createInjector(modules);
-      this.inst = guice.getInstance(clazz);
-    }
-    return this.inst;
+    super(handlerClass, modules);
   }
 
   /**
@@ -58,7 +47,6 @@ public abstract class LambdaWrapper<T, C extends LambdaHandler<?>> {
 
 
   public static void addBasicProperties(List<Module> modules, Properties props) {
-    modules.add(new PropertiesModule(props));
-    modules.add(new DefaultCredentialsModule());
+    LambdaBaseWrapper.addBasicProperties(modules, props);
   }
 }

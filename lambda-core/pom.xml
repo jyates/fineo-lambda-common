@@ -55,11 +55,13 @@
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-core</artifactId>
       <version>${aws-lambda-java-core.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-events</artifactId>
       <version>${aws-lambda-java-core.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- Test Dependencies -->

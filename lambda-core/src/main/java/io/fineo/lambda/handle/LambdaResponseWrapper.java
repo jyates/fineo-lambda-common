@@ -2,38 +2,23 @@ package io.fineo.lambda.handle;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Module;
-import io.fineo.lambda.configure.DefaultCredentialsModule;
-import io.fineo.lambda.configure.PropertiesModule;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Wrapper similar to the {@link LambdaWrapper}, but supports a response type as well
  */
 public abstract class
-  LambdaResponseWrapper<INPUT, OUTPUT, C extends RequestHandler<INPUT, OUTPUT>> {
-
-  private final Class<C> clazz;
-  private final List<Module> modules;
+LambdaResponseWrapper<INPUT, OUTPUT, C extends RequestHandler<INPUT, OUTPUT>>
+  extends LambdaBaseWrapper<C> {
   private C inst;
 
   public LambdaResponseWrapper(Class<C> handlerClass, List<Module> modules) {
-    this.clazz = handlerClass;
-    this.modules = modules;
+    super(handlerClass, modules);
   }
 
-  protected C getInstance() {
-    if (inst == null) {
-      Injector guice = Guice.createInjector(modules);
-      this.inst = guice.getInstance(clazz);
-    }
-    return this.inst;
-  }
 
   /**
    * Subclasses have to implement this method themselves. Otherwise, AWS Lambda for some reason
@@ -58,10 +43,4 @@ public abstract class
    * @throws IOException on failure
    */
   protected abstract OUTPUT handle(INPUT event) throws IOException;
-
-
-  public static void addBasicProperties(List<Module> modules, Properties props) {
-    modules.add(new PropertiesModule(props));
-    modules.add(new DefaultCredentialsModule());
-  }
 }

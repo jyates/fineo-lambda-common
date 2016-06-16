@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 /**
  * A lambda handler that handles Kinesis events
  */
-public abstract class LambdaHandler implements LambdaHandler<YOUR_EVENT_TYPE> {
+public abstract class FineoLambdaHandler implements LambdaHandler<YOUR_EVENT_TYPE> {
 
   private static final Logger LOG = LoggerFactory.getLogger(KinesisHandler.class);
 
