@@ -11,5 +11,16 @@
 
   <artifactId>lambda-dynamo</artifactId>
 
-
+  <dependencies>
+    <dependency>
+      <groupId>io.fineo.lambda</groupId>
+      <artifactId>lambda-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-dynamodb</artifactId>
+      <version>${aws-java-sdk.version}</version>
+    </dependency>
+  </dependencies>
 </project>

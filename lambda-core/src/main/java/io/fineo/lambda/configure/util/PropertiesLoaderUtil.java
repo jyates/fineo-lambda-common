@@ -1,7 +1,6 @@
 package io.fineo.lambda.configure.util;
 
 import com.google.common.base.Preconditions;
-import io.fineo.lambda.configure.legacy.LambdaClientProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,7 @@ public class PropertiesLoaderUtil {
   }
 
   public static Properties load(String file) throws IOException {
-    InputStream input = LambdaClientProperties.class.getClassLoader().getResourceAsStream(file);
+    InputStream input = PropertiesLoaderUtil.class.getClassLoader().getResourceAsStream(file);
     Preconditions.checkArgument(input != null, "Could not load properties file: " + file);
     Properties props = new Properties();
     props.load(input);

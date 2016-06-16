@@ -12,7 +12,11 @@
   <url>http://fineo.io</url>
 
   <properties>
+    <!-- Dependency versions -->
     <fineo-lambda.version>1.0-SNAPSHOT</fineo-lambda.version>
+
+    <!-- Plugin versions -->
+    <maven.shade.version>2.3</maven.shade.version>
   </properties>
 
   <dependencies>

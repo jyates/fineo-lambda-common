@@ -5,7 +5,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
-import io.fineo.etl.FineoProperties;
 
 import java.io.Serializable;
 
@@ -14,6 +13,8 @@ import java.io.Serializable;
  */
 public class DynamoRegionConfigurator extends AbstractModule implements Serializable {
 
+  public static final String DYNAMO_REGION = "fineo.dynamo.region";
+
   @Override
   protected void configure() {
   }
@@ -21,7 +22,7 @@ public class DynamoRegionConfigurator extends AbstractModule implements Serializ
   @Provides
   @Inject
   public AwsDynamoConfigurator getRegionConfigurator(
-    @Named(FineoProperties.DYNAMO_REGION) String region) {
+    @Named(DYNAMO_REGION) String region) {
     return client -> client.setRegion(RegionUtils.getRegion(region));
   }
 }
