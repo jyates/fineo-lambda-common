@@ -31,7 +31,7 @@
       <groupId>io.fineo.lambda</groupId>
       <artifactId>lambda-core</artifactId>
       <version>${fineo-lambda.version}</version>
-      <classifier>test</classifier>
+      <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>
