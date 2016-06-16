@@ -1,6 +1,7 @@
 package io.fineo.lambda.handle;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -12,21 +13,21 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Wrapper class that calls the actual lambda function, instantiating the caller class, as
- * necessary.
+ * Wrapper similar to the {@link LambdaWrapper}, but supports a response type as well
  */
-public abstract class LambdaWrapper<T, C extends LambdaHandler<?>> {
+public abstract class
+  LambdaResponseWrapper<INPUT, OUTPUT, C extends RequestHandler<INPUT, OUTPUT>> {
 
   private final Class<C> clazz;
   private final List<Module> modules;
   private C inst;
 
-  public LambdaWrapper(Class<C> handlerClass, List<Module> modules) {
+  public LambdaResponseWrapper(Class<C> handlerClass, List<Module> modules) {
     this.clazz = handlerClass;
     this.modules = modules;
   }
 
-  protected C getInstance(){
+  protected C getInstance() {
     if (inst == null) {
       Injector guice = Guice.createInjector(modules);
       this.inst = guice.getInstance(clazz);
@@ -39,11 +40,12 @@ public abstract class LambdaWrapper<T, C extends LambdaHandler<?>> {
    * thinks we are casting the event to a LinkedHashMap. I don't know. Its weird. You shouldn't
    * have to do much in the method beyond {@link #getInstance()} and then
    * {@link LambdaHandler#handle(Object)}.
+   *
    * @param event AWS Lambda event
    * @throws IOException on failure
    */
-  public void handle(T event, Context context) throws IOException{
-    handle(event);
+  public OUTPUT handle(INPUT event, Context context) throws IOException {
+    return handle(event);
   }
 
   /**
@@ -51,10 +53,11 @@ public abstract class LambdaWrapper<T, C extends LambdaHandler<?>> {
    * thinks we are casting the event to a LinkedHashMap. I don't know. Its weird. You shouldn't
    * have to do much in the method beyond {@link #getInstance()} and then
    * {@link LambdaHandler#handle(Object)}
+   *
    * @param event AWS Lambda event
    * @throws IOException on failure
    */
-  protected abstract void handle(T event) throws IOException;
+  protected abstract OUTPUT handle(INPUT event) throws IOException;
 
 
   public static void addBasicProperties(List<Module> modules, Properties props) {
