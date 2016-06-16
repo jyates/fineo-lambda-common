@@ -1,0 +1,37 @@
+package io.fineo.lambda;
+
+import java.lang.reflect.Method;
+
+/**
+ *
+ */
+public abstract class LocalMain {
+
+  /**
+   * Parent wrapper for running Lambda functions locally
+   *
+   * @param args <ol><li>local runner class</li><li>handler class name</li><li>method name</li></ol>
+   * @throws Exception
+   */
+  public static void main(String[] args) throws Exception {
+    String className = args[1];
+    String method = args[2];
+    Class clazz = Class.forName(className);
+    Object o = clazz.newInstance();
+    Method m = clazz.getMethod(method, Object.class);
+    if (m == null) {
+      m = clazz.getMethod(method, Object.class, Object.class);
+    }
+    if (m == null) {
+      throw new RuntimeException(
+        "Could not find any method matching: " + method + " in " + className);
+    }
+
+    Class<LocalMain> source = (Class<LocalMain>) Class.forName(args[0]);
+    String[] remaining = new String[args.length - 3];
+    System.arraycopy(args, 3, remaining, 0, remaining.length);
+    source.newInstance().run(o, m, remaining);
+  }
+
+  abstract void run(Object inst, Method m, String[] args);
+}
