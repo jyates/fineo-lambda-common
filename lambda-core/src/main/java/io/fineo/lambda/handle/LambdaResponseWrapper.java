@@ -19,7 +19,6 @@ LambdaResponseWrapper<INPUT, OUTPUT, C extends RequestHandler<INPUT, OUTPUT>>
     super(handlerClass, modules);
   }
 
-
   /**
    * Subclasses have to implement this method themselves. Otherwise, AWS Lambda for some reason
    * thinks we are casting the event to a LinkedHashMap. I don't know. Its weird. You shouldn't
@@ -29,18 +28,5 @@ LambdaResponseWrapper<INPUT, OUTPUT, C extends RequestHandler<INPUT, OUTPUT>>
    * @param event AWS Lambda event
    * @throws IOException on failure
    */
-  public OUTPUT handle(INPUT event, Context context) throws IOException {
-    return handle(event);
-  }
-
-  /**
-   * Subclasses have to implement this method themselves. Otherwise, AWS Lambda for some reason
-   * thinks we are casting the event to a LinkedHashMap. I don't know. Its weird. You shouldn't
-   * have to do much in the method beyond {@link #getInstance()} and then
-   * {@link LambdaHandler#handle(Object)}
-   *
-   * @param event AWS Lambda event
-   * @throws IOException on failure
-   */
-  protected abstract OUTPUT handle(INPUT event) throws IOException;
+  public abstract OUTPUT handle(INPUT event, Context context) throws IOException;
 }

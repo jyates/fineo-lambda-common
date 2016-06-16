@@ -14,7 +14,7 @@ import static io.fineo.lambda.configure.util.SingleInstanceModule.instanceModule
 /**
  * Wrapper to instantiate the raw stage
  */
-public class LambdaWrapper extends LambdaWrapper<YOUR_EVENT_TYPE, YOUR_HANDLER> {
+public class FineoLambdaWrapper extends LambdaWrapper<YOUR_EVENT_TYPE, YOUR_HANDLER> {
 
   public LambdaWrapper() throws IOException {
     this(getModules(PropertiesLoaderUtil.load()));
