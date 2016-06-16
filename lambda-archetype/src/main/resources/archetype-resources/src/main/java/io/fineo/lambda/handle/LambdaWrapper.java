@@ -1,4 +1,4 @@
-package io.fineo.lamda;
+package io.fineo.lambda.handle;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Module;
