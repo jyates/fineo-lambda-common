@@ -1,5 +1,8 @@
 package io.fineo.lambda;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -31,6 +34,11 @@ public abstract class LocalMain {
     String[] remaining = new String[args.length - 3];
     System.arraycopy(args, 3, remaining, 0, remaining.length);
     source.newInstance().run(o, m, remaining);
+  }
+
+  protected <T> T map(String json, Class<T> clazz) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.readValue(json, clazz);
   }
 
   abstract void run(Object inst, Method m, String[] args);
