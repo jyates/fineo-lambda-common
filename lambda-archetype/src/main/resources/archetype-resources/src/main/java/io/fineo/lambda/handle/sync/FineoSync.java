@@ -1,4 +1,4 @@
-package io.fineo.lambda.handle;
+package io.fineo.lambda.handle.sync;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Module;
@@ -14,7 +14,7 @@ import static io.fineo.lambda.configure.util.SingleInstanceModule.instanceModule
 /**
  * Wrapper to instantiate the raw stage
  */
-public class FineoResponse extends LambdaReponseWrapper<FineoRequest, FineoResponse>{
+public class FineoSync extends LambdaReponseWrapper<FineoRequest, FineoResponse>{
 
   public FineoResponse() throws IOException {
     this(getModules(PropertiesLoaderUtil.load()));

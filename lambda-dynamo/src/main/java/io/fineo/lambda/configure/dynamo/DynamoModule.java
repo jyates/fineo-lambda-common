@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DynamoModule extends AbstractModule {
+
   private static final Logger LOG = LoggerFactory.getLogger(DynamoModule.class);
 
   @Provides

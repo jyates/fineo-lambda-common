@@ -3,9 +3,16 @@
   <id>lambda-archetype</id>
   <allowPartial>true</allowPartial>
   <sources>
-    <source>src/main/java/io/fineo/lambda/LambdaWrapper.java</source>
-    <source>src/main/java/io/fineo/lambda/LambdaHandler.java</source>
+    <source>src/main/java/io/fineo/lambda/handle/FineoLambda.java</source>
+    <source>src/main/java/io/fineo/lambda/handle/FineoLambdaHandler.java</source>
+    <source>src/main/java/io/fineo/lambda/handle/sync/FineoRequest.java</source>
+    <source>src/main/java/io/fineo/lambda/handle/sync/FineoResponse.java</source>
+    <source>src/main/java/io/fineo/lambda/handle/sync/FineoSync.java</source>
+    <source>src/main/java/io/fineo/lambda/handle/sync/FineoSyncHandler.java</source>
   </sources>
+  <testSources>
+    <source>src/test/java</source>
+  </testSources>
   <fileSets>
     <fileSet>
       <directory>config</directory>
