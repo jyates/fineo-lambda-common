@@ -1,19 +1,15 @@
 package io.fineo.lambda.handle;
 
-import com.amazonaws.services.lambda.runtime.Context;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import io.fineo.lambda.configure.DefaultCredentialsModule;
 import io.fineo.lambda.configure.PropertiesModule;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-/**
- *
- */
 public class LambdaBaseWrapper<C> {
 
   private final Class<C> clazz;
@@ -36,5 +32,10 @@ public class LambdaBaseWrapper<C> {
   public static void addBasicProperties(List<Module> modules, Properties props) {
     modules.add(new PropertiesModule(props));
     modules.add(new DefaultCredentialsModule());
+  }
+
+  @VisibleForTesting
+  public Injector getGuiceForTesting() {
+    return Guice.createInjector(modules);
   }
 }
