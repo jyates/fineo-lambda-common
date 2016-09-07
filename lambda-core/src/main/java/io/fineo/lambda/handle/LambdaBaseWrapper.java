@@ -15,15 +15,18 @@ public class LambdaBaseWrapper<C> {
   private final Class<C> clazz;
   private final List<Module> modules;
   private C inst;
+  private Injector guice;
 
   public LambdaBaseWrapper(Class<C> handlerClass, List<Module> modules) {
     this.clazz = handlerClass;
     this.modules = modules;
   }
 
-  protected C getInstance(){
+  protected C getInstance() {
+    if (this.guice == null) {
+      guice = Guice.createInjector(modules);
+    }
     if (inst == null) {
-      Injector guice = Guice.createInjector(modules);
       this.inst = guice.getInstance(clazz);
     }
     return this.inst;
@@ -36,6 +39,6 @@ public class LambdaBaseWrapper<C> {
 
   @VisibleForTesting
   public Injector getGuiceForTesting() {
-    return Guice.createInjector(modules);
+    return guice;
   }
 }
