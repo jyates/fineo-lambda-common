@@ -36,6 +36,11 @@ public class TestLambdaBaseWrapper {
     assertEquals(Slf4jLogFactory.class, InternalLogFactory.getFactory().getClass());
   }
 
+  @Test
+  public void testDoNotFailLoggingEnableIfNullContext() throws Exception {
+    LambdaBaseWrapper.log(null);
+  }
+
   private static class ObjectModuleLoader extends AbstractModule {
 
     @Override

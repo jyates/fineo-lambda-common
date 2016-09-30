@@ -46,6 +46,12 @@ public class LambdaBaseWrapper<C> {
   }
 
   public static void log(Context context) {
+    if (context == null) {
+      System.err.println("Context is null. Generally this should only happen in tests. If you are"
+                         + " seeing this message in production, something has gone terribly "
+                         + "terribly wrong");
+      return;
+    }
     MDC.clear();
     MDC.put(AWS_REQUEST_ID, context.getAwsRequestId());
   }
