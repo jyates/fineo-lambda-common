@@ -11,7 +11,8 @@ import java.util.Map;
  *
  */
 public class ExternalErrorsUtil {
-  private ExternalErrorsUtil(){}
+  private ExternalErrorsUtil() {
+  }
 
   public static RuntimeException get40X(Context context, int code, String message)
     throws JsonProcessingException {
@@ -43,7 +44,14 @@ public class ExternalErrorsUtil {
     Map<String, Object> errorPayload = new HashMap();
     errorPayload.put("errorType", type);
     errorPayload.put("httpStatus", code);
-    errorPayload.put("requestId", context.getAwsRequestId());
+    if (context == null) {
+      System.err.println("Context is null. Generally this should only happen in tests. If you are"
+                         + " seeing this message in production, something has gone terribly "
+                         + "terribly wrong");
+      errorPayload.put("requestId", "--- missing ---");
+    } else {
+      errorPayload.put("requestId", context.getAwsRequestId());
+    }
     errorPayload.put("message", message);
     return new RuntimeException(new ObjectMapper().writeValueAsString(errorPayload));
   }
