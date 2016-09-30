@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- *
+ * Handle requests that go to external facing customers
  */
 public abstract class ExternalFacingRequestHandler<INPUT, OUTPUT>
   extends ThrowingRequestHandler<INPUT, OUTPUT> {
   private static final Logger LOG = LoggerFactory.getLogger(ExternalFacingRequestHandler.class);
 
   @Override
-  public OUTPUT handleRequest(INPUT input, Context context) {
+  public final OUTPUT handleRequest(INPUT input, Context context) {
     try {
       return super.handleRequest(input, context);
     } catch (Exception e) {
@@ -58,5 +58,9 @@ public abstract class ExternalFacingRequestHandler<INPUT, OUTPUT>
       }
     }
     return e;
+  }
+
+  @Override
+  public void extendExternalFacingRequestHandlerInstead() {
   }
 }

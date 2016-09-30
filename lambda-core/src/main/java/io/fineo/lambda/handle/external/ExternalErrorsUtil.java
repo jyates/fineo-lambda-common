@@ -26,6 +26,9 @@ public class ExternalErrorsUtil {
       case 4:
         type = "Not Found";
         break;
+      default:
+        throw new RuntimeException(
+          "Could not determine error message type. Expected: 40" + code + ": " + message);
     }
     return getExternalError(context, 400 + code, type, message);
   }
