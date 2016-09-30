@@ -12,12 +12,8 @@ import static java.lang.String.valueOf;
  */
 public class Slf4jLogFactory extends InternalLogFactory {
 
-  static {
-    InternalLogFactory.configureFactory(new Slf4jLogFactory());
-  }
-
   public static boolean enable() {
-    return true;
+    return InternalLogFactory.configureFactory(new Slf4jLogFactory());
   }
 
   @Override
