@@ -22,7 +22,7 @@ public class LambdaBaseWrapper<C> {
   // run all aws logging through slf4j.
   static {
     boolean success = Slf4jLogFactory.enable();
-    LOG.info("{}: successfully enabled slf4j log factory", success);
+    LOG.debug("{}: successfully enabled slf4j log factory", success);
   }
 
   private final Class<C> clazz;
