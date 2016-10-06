@@ -19,10 +19,11 @@ public class DynamoModule extends AbstractModule {
   @Singleton
   public AmazonDynamoDBAsyncClient getDynamoClient(AWSCredentialsProvider provider,
     AwsDynamoConfigurator configurator) {
-    LOG.debug("Creating io.fineo.lambda.handle.dynamo.dynamo with provider: {}", provider);
+    LOG.debug("Creating dynamo with provider: {}", provider);
     AmazonDynamoDBAsyncClient client = new AmazonDynamoDBAsyncClient(provider);
+    LOG.debug("Got client, configuring");
     configurator.configure(client);
-    LOG.debug("Got client, setting endpoint");
+    LOG.debug("---> created dynamo client");
     return client;
   }
 
