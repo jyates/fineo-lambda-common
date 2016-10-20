@@ -37,6 +37,10 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
+      <!-- More work to support correct guicing with lambdas in java8
+        @see https://github.com/google/guice/issues/757
+      -->
+      <classifier>no_aop</classifier>
       <version>${guice.version}</version>
     </dependency>
     <dependency>
