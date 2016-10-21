@@ -55,10 +55,10 @@ public class LambdaBaseWrapper<C> {
                          + "terribly wrong");
       return;
     }
-    LOG.debug("Setting MDC");
-    MDC.clear();
-    MDC.put(AWS_REQUEST_ID, context.getAwsRequestId());
-    LOG.debug("Finished setting MDC");
+//    LOG.debug("Setting MDC");
+//    MDC.clear();
+//    MDC.put(AWS_REQUEST_ID, context.getAwsRequestId());
+//    LOG.debug("Finished setting MDC");
   }
 
   public static void addBasicProperties(List<Module> modules, Properties props) {
