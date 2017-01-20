@@ -31,4 +31,8 @@ public class PropertiesModule extends AbstractModule implements Serializable {
   public static PropertiesModule load() throws IOException {
     return new PropertiesModule(PropertiesLoaderUtil.load());
   }
+
+  public Properties getProps() {
+    return props;
+  }
 }

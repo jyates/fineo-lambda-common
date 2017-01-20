@@ -2,6 +2,7 @@ package io.fineo.lambda.handle;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.CreationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -9,15 +10,13 @@ import io.fineo.lambda.configure.DefaultCredentialsModule;
 import io.fineo.lambda.configure.PropertiesModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.util.List;
 import java.util.Properties;
 
 public class LambdaBaseWrapper<C> {
-
-  static final String AWS_REQUEST_ID = "AWSRequestId";
-  private static final Logger LOG = LoggerFactory.getLogger(LambdaBaseWrapper.class);
+  @VisibleForTesting
+  static Logger LOG = LoggerFactory.getLogger(LambdaBaseWrapper.class);
 
   // run all aws logging through slf4j.
   static {
@@ -36,16 +35,38 @@ public class LambdaBaseWrapper<C> {
   }
 
   protected C getInstance() {
-    LOG.debug("Getting instance");
-    if (this.guice == null) {
-      guice = Guice.createInjector(modules);
-    }
-    LOG.debug("Got injector");
-    if (inst == null) {
-      this.inst = guice.getInstance(clazz);
+    try {
+      LOG.debug("Getting instance");
+      if (this.guice == null) {
+        guice = Guice.createInjector(modules);
+      }
+      LOG.debug("Got injector");
+      if (inst == null) {
+        this.inst = guice.getInstance(clazz);
+      }
+    } catch (CreationException e) {
+      if (e.getErrorMessages()
+           .stream()
+           .filter(
+             message -> message.getMessage().contains("No implementation for java.lang.String"))
+           .findAny().isPresent()) {
+        logSetupProperties();
+      }
+      throw e;
     }
     LOG.debug("Got instance");
     return this.inst;
+  }
+
+  private void logSetupProperties() {
+    for (Module m : modules) {
+      if (m instanceof PropertiesModule) {
+        PropertiesModule pm = (PropertiesModule) m;
+        Properties props = pm.getProps();
+        LOG.info("Initialized with properties: \n{}", props);
+        break;
+      }
+    }
   }
 
   public static void log(Context context) {
@@ -55,10 +76,6 @@ public class LambdaBaseWrapper<C> {
                          + "terribly wrong");
       return;
     }
-//    LOG.debug("Setting MDC");
-//    MDC.clear();
-//    MDC.put(AWS_REQUEST_ID, context.getAwsRequestId());
-//    LOG.debug("Finished setting MDC");
   }
 
   public static void addBasicProperties(List<Module> modules, Properties props) {
