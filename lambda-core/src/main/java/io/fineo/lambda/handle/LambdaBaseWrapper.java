@@ -8,6 +8,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import io.fineo.lambda.configure.DefaultCredentialsModule;
 import io.fineo.lambda.configure.PropertiesModule;
+import io.fineo.lambda.configure.UtcClockModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +82,7 @@ public class LambdaBaseWrapper<C> {
   public static void addBasicProperties(List<Module> modules, Properties props) {
     modules.add(new PropertiesModule(props));
     modules.add(new DefaultCredentialsModule());
+    modules.add(new UtcClockModule());
   }
 
   @VisibleForTesting
