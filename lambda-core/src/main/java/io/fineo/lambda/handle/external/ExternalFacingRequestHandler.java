@@ -3,6 +3,8 @@ package io.fineo.lambda.handle.external;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import io.fineo.lambda.handle.ThrowingRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,17 @@ import java.util.Arrays;
 public abstract class ExternalFacingRequestHandler<INPUT, OUTPUT>
   extends ThrowingRequestHandler<INPUT, OUTPUT> {
   private static final Logger LOG = LoggerFactory.getLogger(ExternalFacingRequestHandler.class);
+
+  private String errorEmail;
+
+  public ExternalFacingRequestHandler() {
+    this("errors@fineo.io");
+  }
+
+  @Inject
+  public ExternalFacingRequestHandler(@Named("handler.error.email") String errorEmail) {
+    this.errorEmail = errorEmail;
+  }
 
   @Override
   public final OUTPUT handleRequest(INPUT input, Context context) {
@@ -35,7 +48,7 @@ public abstract class ExternalFacingRequestHandler<INPUT, OUTPUT>
     // wrap the exception into better error handling
     if (msg == null || !msg.startsWith("{")) {
       StringBuffer sb = new StringBuffer(
-        "Internal Server Error. Please send this output to errors@fineo.io\n Error:\n ");
+        "Internal Server Error. Please send this output to " + errorEmail + "\n Error:\n ");
       sb.append(e.getClass().getName());
       sb.append("\n");
       if (msg != null) {
@@ -53,7 +66,7 @@ public abstract class ExternalFacingRequestHandler<INPUT, OUTPUT>
             .getStackTrace()));
         } catch (JsonProcessingException e1) {
           throw new RuntimeException("Internal server error building root error message. Please"
-                                     + " report error to: errors@fineo.io", e);
+                                     + " report error to: " + errorEmail, e);
         }
       }
     }

@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
- *
+ * Parent wrapper for running Lambda functions locally
  */
 public abstract class LocalMain {
 
   /**
-   * Parent wrapper for running Lambda functions locally
-   *
    * @param args <ol><li>local runner class</li><li>handler class name</li><li>method name</li></ol>
    * @throws Exception
    */
